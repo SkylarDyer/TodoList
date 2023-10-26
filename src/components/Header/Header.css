@@ -1,3 +1,9 @@
 .header__title {
-  background-color: green;
+  display: flex;
+  justify-content: center;
 }
+
+.header__subtitle {
+  display: flex;
+  justify-content: center;
+} 

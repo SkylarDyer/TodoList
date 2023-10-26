@@ -1,0 +1,7 @@
+.list {
+  display: flex;
+  justify-content: center;
+}
+.list__title {
+  display: flex;
+}

@@ -1,13 +1,13 @@
-import List from "./components/List/List";
+import TodoList from "./components/TodoList/TodoList";
 import Header from "./components/Header/Header";
-import Todo from "./components/Todo/Todo";
+import TodoWrapper from "./components/TodoWrapper/TodoWrapper";
+
 function App() {
   return (
     <>
       <div>
         <Header />
-        <Todo />
-        <List />
+        <TodoWrapper />
       </div>
     </>
   );
