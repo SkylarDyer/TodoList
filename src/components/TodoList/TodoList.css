@@ -1,4 +1,9 @@
-.list {
+.todo__list {
+  width: auto;
+  height: auto;
   display: flex;
   justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  margin: 100px auto;
 }

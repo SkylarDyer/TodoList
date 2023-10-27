@@ -1,39 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./TodoForm.css";
 
-const TodoForm = () => {
+function TodoForm(props) {
   const [task, setTask] = useState("");
+
+  const taskRef = useRef(null);
+  useEffect(() => {
+    taskRef.current.focus();
+  });
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    props.onSubmit({ id: Math.floor(Math.random() * 10000), text: task });
     setTask("");
+    console.log(task);
   };
+  const handleChange = (e) => {
+    setTask(e.target.value);
+  };
+  const isDisabled = task.trim().length === 0;
+
   return (
     <form className="todo__form" onSubmit={handleSubmit}>
       <input
         type="text"
+        minLength={2}
         value={task}
-        className="todo__input"
-        placeholder="What's up?"
-        onChange={(e) => {
-          setTask(e.target.value);
-        }}
+        className="todo__form-input"
+        placeholder="Add a task"
+        onChange={handleChange}
+        ref={taskRef}
       />
-      <button className="btn todo__button" type="submit">
-        Add
+      <button
+        className="todo__form-button-add"
+        type="submit"
+        disabled={isDisabled}
+      >
+        +
       </button>
-      <div className="todo__button-group">
-        <button type="button" className="btn list__button todo__btn-all">
+      <div className="todo__form-button-group">
+        <button type="button" className="todo__form-button">
           <span>All</span>
         </button>
-        <button type="button" className="btn list__button todo__btn-active">
+        <button type="button" className="todo__form-button">
           <span>Active</span>
         </button>
-        <button type="button" className="btn list__button todo__btn-completed">
+        <button type="button" className="todo__form-button">
           <span>Completed</span>
         </button>
       </div>
     </form>
   );
-};
+}
 
 export default TodoForm;
