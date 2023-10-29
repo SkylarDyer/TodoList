@@ -1,27 +1,35 @@
 import React, { useState } from "react";
+import TodoForm from "../TodoForm/TodoForm";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { LiaEdit } from "react-icons/lia";
-import TodoForm from "../TodoForm/TodoForm";
 import "./TodoItem.css";
-function TodoItem({ todos, completeTodo, deleteTodo, editTodo }) {
-  const [edit, setEdit] = useState({ id: null, value: "" });
 
-  const submitEdit = (value) => {
+const TodoItem = ({ todos, completeTodo, removeTodo, editTodo }) => {
+  const [edit, setEdit] = useState({
+    id: null,
+    value: "",
+  });
+
+  const submitUpdate = (value) => {
     editTodo(edit.id, value);
-    setEdit({ id: null, value: "" });
+    setEdit({
+      id: null,
+      value: "",
+    });
   };
+
   if (edit.id) {
-    return <TodoForm edit={edit} onSubmit={submitEdit} />;
+    return <TodoForm edit={edit} onSubmit={submitUpdate} />;
   }
 
-  return todos.map((todo, index) => (
+  return todos.map((todo) => (
     <div
       className={
         todo.isComplete ? "todo__item todo__item-complete" : "todo__item"
       }
-      key={index}
+      key={todo.id}
     >
-      <div key={todo.id} onClick={() => completeTodo(todo.id)}>
+      <div key={todo.id} className="todo__item-task" onClick={() => completeTodo(todo.id)}>
         {todo.text}
       </div>
       <div className="todo__item-icons">
@@ -30,11 +38,12 @@ function TodoItem({ todos, completeTodo, deleteTodo, editTodo }) {
           className="todo__item-edit-btn"
         />
         <RiDeleteBin5Line
-          onClick={() => deleteTodo(todo.id)}
+          onClick={() => removeTodo(todo.id)}
           className="todo__item-delete-btn"
         />
       </div>
     </div>
   ));
-}
+};
+
 export default TodoItem;

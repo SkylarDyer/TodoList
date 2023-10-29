@@ -1,55 +1,59 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./TodoForm.css";
-
 function TodoForm(props) {
-  const [task, setTask] = useState("");
+  const [input, setInput] = useState(props.edit ? props.edit.value : "");
 
-  const taskRef = useRef(null);
+  const inputRef = useRef(null);
+
   useEffect(() => {
-    taskRef.current.focus();
+    inputRef.current.focus();
   });
+
+  const handleChange = (e) => {
+    setInput(e.target.value);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    props.onSubmit({ id: Math.floor(Math.random() * 10000), text: task });
-    setTask("");
-    console.log(task);
+    props.onSubmit({
+      id: Math.floor(Math.random() * 10000),
+      text: input,
+    });
+    setInput("");
   };
-  const handleChange = (e) => {
-    setTask(e.target.value);
-  };
-  const isDisabled = task.trim().length === 0;
 
   return (
-    <form className="todo__form" onSubmit={handleSubmit}>
-      <input
-        type="text"
-        minLength={2}
-        value={task}
-        className="todo__form-input"
-        placeholder="Add a task"
-        onChange={handleChange}
-        ref={taskRef}
-      />
-      <button
-        className="todo__form-button-add"
-        type="submit"
-        disabled={isDisabled}
-      >
-        +
-      </button>
-      <div className="todo__form-button-group">
-        <button type="button" className="todo__form-button">
-          <span>All</span>
-        </button>
-        <button type="button" className="todo__form-button">
-          <span>Active</span>
-        </button>
-        <button type="button" className="todo__form-button">
-          <span>Completed</span>
-        </button>
-      </div>
+    <form onSubmit={handleSubmit} className="todo__form">
+      {props.edit ? (
+        <>
+          <input
+            placeholder="Update item"
+            value={input}
+            onChange={handleChange}
+            name="text"
+            ref={inputRef}
+            className="todo__form-input todo__form-edit-input"
+          />
+          <button onClick={handleSubmit} className="todo__form-button-edit">
+            +
+          </button>
+        </>
+      ) : (
+        <>
+          <input
+            placeholder="Add a todo"
+            value={input}
+            onChange={handleChange}
+            name="text"
+            className="todo__form-input"
+            ref={inputRef}
+          />
+          <button onClick={handleSubmit} className="todo__form-button-add">
+            +
+          </button>
+        </>
+      )}
     </form>
   );
 }

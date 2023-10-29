@@ -1,0 +1,10 @@
+.todo__app {
+  display: flex;
+  justify-content: center;
+  width: auto;
+  min-height: 600px;
+  text-align: center;
+  margin: 128px;
+  border-radius: 10px;
+  padding-bottom: 32px;
+}

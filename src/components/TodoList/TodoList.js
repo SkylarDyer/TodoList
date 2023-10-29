@@ -1,16 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import TodoForm from "../TodoForm/TodoForm";
 import TodoItem from "../TodoItem/TodoItem";
-import "./TodoList.css";
+import FilterButton from "../FilterButton/FilterButton";
 
 function TodoList() {
   const [todos, setTodos] = useState([]);
+  const [filter, setFilter] = useState("All");
 
-  const addTodo = (todo) => {
-    const newTodos = [todo, ...todos];
-    setTodos(newTodos);
-    console.log(todo);
+  const FILTER_MAP = {
+    All: () => true,
+    Active: (todo) => !todo.isComplete,
+    Completed: (todo) => todo.isComplete,
   };
+
+  const FILTER_NAMES = Object.keys(FILTER_MAP);
+
+  const filterList = FILTER_NAMES.map((name) => (
+    <FilterButton
+      key={name}
+      name={name}
+      isPressed={name === filter}
+      setFilter={setFilter}
+    />
+  ));
+
+  const addTodo = useCallback(
+    (todo) => {
+      const newTodos = [todo, ...todos];
+      setTodos(newTodos);
+    },
+    [todos]
+  );
 
   const editTodo = (todoId, newValue) => {
     setTodos((prev) =>
@@ -18,9 +38,10 @@ function TodoList() {
     );
   };
 
-  const deleteTodo = (id) => {
-    const deleteArr = [...todos].filter((todo) => todo.id !== id);
-    setTodos(deleteArr);
+  const removeTodo = (id) => {
+    const removedArr = [...todos].filter((todo) => todo.id !== id);
+
+    setTodos(removedArr);
   };
 
   const completeTodo = (id) => {
@@ -32,24 +53,28 @@ function TodoList() {
     });
     setTodos(updatedTodos);
   };
-  return (
-    <div className="todo__list">
-      <h1>What's the task?</h1>
-      <TodoForm onSubmit={addTodo} />
+
+  const todoList = todos
+    .filter(FILTER_MAP[filter])
+    .map((todo) => (
       <TodoItem
+        key={todo.id}
+        id={todo.id}
+        isComplete={todo.isComplete}
         todos={todos}
         completeTodo={completeTodo}
-        deleteTodo={deleteTodo}
+        removeTodo={removeTodo}
         editTodo={editTodo}
       />
+    ));
+
+  return (
+    <div className="todo__list">
+      <h1>What's the Plan for Today?</h1>
+      <TodoForm onSubmit={addTodo} />
+      <div className="filter__button-group">{filterList}</div>
+      {todoList}
     </div>
-    // <div className="list">
-    //   <p>{task.task}</p>
-    //   <div>
-    //     <button>Edit</button>
-    //     <button>Delete</button>
-    //   </div>
-    // </div>
   );
 }
 
