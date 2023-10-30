@@ -29,7 +29,18 @@ const TodoItem = ({ todos, completeTodo, removeTodo, editTodo }) => {
       }
       key={todo.id}
     >
-      <div key={todo.id} className="todo__item-task" onClick={() => completeTodo(todo.id)}>
+      <div
+        // key={todo.id}
+        className="todo__item-task"
+        onClick={() => completeTodo(todo.id)}
+      >
+        {todo.title}
+      </div>
+      <div
+        // key={todo.id}
+        className="todo__item-task"
+        onClick={() => completeTodo(todo.id)}
+      >
         {todo.text}
       </div>
       <div className="todo__item-icons">

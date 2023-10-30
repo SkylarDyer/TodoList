@@ -1,28 +1,22 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import TodoForm from "../TodoForm/TodoForm";
 import TodoItem from "../TodoItem/TodoItem";
 import FilterButton from "../FilterButton/FilterButton";
 
+const getInitialState = () => {
+  const data = window.localStorage.getItem("TODO-ITEM");
+  return data ? JSON.parse(data) : [];
+};
+
 function TodoList() {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(getInitialState);
   const [filter, setFilter] = useState("All");
 
-  const FILTER_MAP = {
-    All: () => true,
-    Active: (todo) => !todo.isComplete,
-    Completed: (todo) => todo.isComplete,
-  };
+  useEffect(() => {
+    window.localStorage.setItem("TODO-ITEM", JSON.stringify(todos));
+  }, [todos]);
 
-  const FILTER_NAMES = Object.keys(FILTER_MAP);
-
-  const filterList = FILTER_NAMES.map((name) => (
-    <FilterButton
-      key={name}
-      name={name}
-      isPressed={name === filter}
-      setFilter={setFilter}
-    />
-  ));
+  
 
   const addTodo = useCallback(
     (todo) => {
@@ -45,17 +39,33 @@ function TodoList() {
   };
 
   const completeTodo = (id) => {
-    let updatedTodos = todos.map((todo) => {
+    const updatedTodos = todos.map((todo) => {
       if (todo.id === id) {
-        todo.isComplete = !todo.isComplete;
+        return { ...todo, isComplete: !todo.isComplete };
       }
       return todo;
     });
     setTodos(updatedTodos);
   };
 
-  const todoList = todos
-    .filter(FILTER_MAP[filter])
+  const filterMap = {
+    All: () => true,
+    Active: (todo) => !todo.isComplete,
+    Completed: (todo) => todo.isComplete,
+  };
+
+  const filterNames = Object.keys(filterMap);
+
+  const filteredList = filterNames.map((name) => (
+    <FilterButton
+      key={name}
+      name={name}
+      isPressed={name === filter}
+      setFilter={setFilter}
+    />
+  ));
+  const todoItemFilter = todos
+    .filter(filterMap[filter])
     .map((todo) => (
       <TodoItem
         key={todo.id}
@@ -67,13 +77,14 @@ function TodoList() {
         editTodo={editTodo}
       />
     ));
+  // console.log(filterMap);
 
   return (
     <div className="todo__list">
-      <h1>What's the Plan for Today?</h1>
+      <h1>What's the plan for today?</h1>
       <TodoForm onSubmit={addTodo} />
-      <div className="filter__button-group">{filterList}</div>
-      {todoList}
+      <div className="filter__button-group">{filteredList}</div>
+      {todoItemFilter}
     </div>
   );
 }

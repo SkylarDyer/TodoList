@@ -9,17 +9,23 @@
   border-radius: 10px;
   /* padding-bottom: 32px; */
 }
+
+/* .todo__form-edit{
+  display: flex;
+  flex-direction: column;
+  color: green;
+  align-items: center;
+} */
 .todo__form-label {
   text-align: left;
 }
 
 .todo__form-input {
   font-size: 16px;
-  padding: 5px;
+  padding: 10px;
   transition: box-shadow 0.15s;
   outline: none;
   border: 1px solid #92d2ff;
-  border-radius: 3px;
   color: #333;
   vertical-align: middle;
   margin-bottom: 10px;
@@ -34,19 +40,20 @@
 }
 
 .todo__form-edit-input {
-  margin: 4px auto;
+  margin: 4px auto 0;
   color: #000;
   background: radial-gradient(rgb(255, 255, 255) 0%, rgb(64, 140, 221) 100%);
   border: 1px solid rgb(178, 151, 151);
   padding: 16px;
   border-radius: 5px;
-  width: 40%;
+  width: 60%;
 }
 
 .todo__form-button-add {
   margin-top: 10px;
   background: none;
   border: 1px solid #26b2ff;
+  border-radius: 5px;
   font-size: 25px;
   cursor: pointer;
   outline: none;
@@ -60,7 +67,8 @@
   opacity: 1;
   color: #fff;
   background-color: #26b2ff;
-  transform: scale(1.2);
+  border-radius: 10px;
+  transform: scale(1.1);
 }
 .todo__form-button-add:active {
   opacity: 1;
@@ -68,16 +76,16 @@
 }
 
 .todo__form-button-edit {
-  position: absolute;
   background: none;
-  padding: 10px 14px;
+  margin-bottom: 2px;
+  margin-left: 8px;
+  padding: 12px 20px;
   border-radius: 8px;
   border: 1px solid #26b2ff;
   font-size: 18px;
   font-weight: bold;
   cursor: pointer;
   outline: none;
-  right: 470px;
   color: #26b2ff;
   opacity: 0.8;
   transition: opacity 0.15s, transform 0.15s;
@@ -86,6 +94,6 @@
 .todo__form-button-edit:hover {
   opacity: 1;
   color: #fff;
-  background-color: rgb(114, 172, 235);
+  background-color: #26b2ff;
   transform: scale(1.2);
 }
